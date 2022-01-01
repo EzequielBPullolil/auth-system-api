@@ -9,13 +9,35 @@ describe('user controller test', () => {
 		username: "ezequiel",
 		password: "ezequieL45"
 	}
-	it('create user', () => {
-		expect( userController.createUser( userParams ) )
-		.to.be.an.instanceof( User )
+	describe('create user', () => {
+		it('create user with username already taken', () => {
+			const alreadyExistUser = {
+				username:"alreadyExistUser",
+				password:"abcdfgH5"
+			};
+			expect( ()=>{
+				userController.createUser( alreadyExistUser )
+			} ).to.throw(AlreadyTakeUsername);
+		});
+		it('create user', () => {
+			expect( userController.createUser( userParams ) )
+			.to.be.an.instanceof( User )
+		});
+	});
+	describe('auth user', () => {
+		it('auth non exist user', () => {
+			const nonExistUser = {
+				username:"im not exist",
+				password:"nonExistUser"
+			}
+			expect( userController.authUser( nonExistUser ) )
+			.to.be.false;
+		});
+		it('auth exist user', () => {
+			expect( userController.authUser( userParams ) )
+			.to.be.true;
+		});
+
 	});
 
-	it('auth user', () => {
-		expect( userController.authUser( userParams ) )
-		.to.be.true;
-	});
 });
