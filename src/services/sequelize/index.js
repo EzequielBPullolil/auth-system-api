@@ -10,5 +10,6 @@ const db = {};
 
 db.userModel = require("src/apiServices/user/model")(sequelize, Sequelize)
 
+sequelize.sync()
 
 module.exports = db;
