@@ -7,5 +7,17 @@
 			"host":"localhost",
 			"dialect":"mariadb"
 		}
+	},
+	"Development":{
+		"dbConfig":{
+			"database":"authSystem_dev",
+			"username":"drhades",
+			"password":"EzequielEnMysql",
+			"host":"localhost",
+			"dialect":"mariadb"
+		}
+	},
+	"Server":{
+		"port": 8080
 	}
 }
