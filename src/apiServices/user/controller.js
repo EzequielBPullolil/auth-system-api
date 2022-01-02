@@ -24,8 +24,15 @@ class UserController {
 
 		return new User(user_id, username, password);
 	}
-	authUser(userParams){
-		return true;
+	async authUser(userParams){
+		const {username, password} = userParams;
+		const user = await this.model.findOne({
+			where:{
+				username,
+				password
+			}
+		});
+		return user != null;
 	}
 }
 

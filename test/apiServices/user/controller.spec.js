@@ -12,18 +12,16 @@ const {userModel} = require('test/utils/db_connection');
 describe('user controller test', () => {
 	chai.use(chaiAsPromised)
 	const userController = new UserController(userModel);
-	before(() => {
-		userModel.destroy({
-			where:{
-				username: "ezequiel"
-			}
-		})
-	});
+	const nonExistUser = {
+		username:"im not exist",
+		password:"noPassword"
+	};
 	const userParams = {
 		user_id: "abcsadas",
 		username: "ezequiel",
 		password: "ezequieL45"
 	}
+
 	describe('create user', () => {
 		it('create user with username already taken', () => {
 			const alreadyExistUser = {
@@ -42,19 +40,23 @@ describe('user controller test', () => {
 		});
 	});
 	describe('auth user', () => {
-		it('auth non exist user', () => {
-			const nonExistUser = {
-				username:"im not exist",
-				password:"nonExistUser"
-			}
-			expect( userController.authUser( nonExistUser ) )
+		it('auth non exist user', async () => {
+			const userAtuh = await userController.authUser( nonExistUser )
+			expect( userAtuh )
 			.to.be.false;
 		});
-		it('auth exist user', () => {
-			expect( userController.authUser( userParams ) )
+		it('auth exist user', async() => {
+			const userAtuh = await userController.authUser( userParams )
+			expect( userAtuh )
 			.to.be.true;
 		});
 
 	});
-
+	after(async()=>{
+		await userModel.destroy({
+			where:{
+				username: nonExistUser.username
+			}
+		})
+	})
 });
