@@ -1,10 +1,32 @@
 const User = require("./user")
-const UserController ={};
+const AlreadyTakeUsername = require("./exceptions/AlreadyTakeUsername")
+class UserController {
+	constructor(userModel) {
+		this.model = userModel;
+	}
+	async createUser(userParams){
+		/* create user if username is not already taked */
+		if(!userParams) return;
+		const {user_id, username, password} = userParams;
+		// find user with same name
+		const user = await this.model.findOne({
+			where:{
+				username
+			}
+		});
+		if(user != null) throw new AlreadyTakeUsername();
 
-UserController.createUser = ()=>{
-	return new User();
+		const userCreated = await this.model.create({
+			user_id:user_id,
+			username:username,
+			password:password
+		});
+
+		return new User(user_id, username, password);
+	}
+	authUser(userParams){
+		return true;
+	}
 }
-UserController.authUser = ()=>{
-	return true;
-}
+
 module.exports = UserController;

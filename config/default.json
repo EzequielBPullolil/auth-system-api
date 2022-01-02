@@ -1,0 +1,11 @@
+{
+	"Test":{
+		"dbConfig":{
+			"database":"authSystem_test",
+			"username":"drhades",
+			"password":"EzequielEnMysql",
+			"host":"localhost",
+			"dialect":"mariadb"
+		}
+	}
+}
