@@ -52,10 +52,10 @@ describe('user controller test', () => {
 		});
 
 	});
-	after(async()=>{
+	after(async ()=>{
 		await userModel.destroy({
 			where:{
-				username: nonExistUser.username
+				username: userParams.username
 			}
 		})
 	})
