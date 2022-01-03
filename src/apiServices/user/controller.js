@@ -1,5 +1,6 @@
 const User = require("./user")
 const AlreadyTakeUsername = require("./exceptions/AlreadyTakeUsername")
+const UserParamsValidator = require("./class/UserParamsValidator")
 class UserController {
 	constructor(userModel) {
 		this.model = userModel;
@@ -7,6 +8,7 @@ class UserController {
 	async createUser(userParams){
 		/* create user if username is not already taked */
 		if(!userParams) return;
+		new UserParamsValidator(userParams)
 		const {user_id, username, password} = userParams;
 		// find user with same name
 		const user = await this.model.findOne({
