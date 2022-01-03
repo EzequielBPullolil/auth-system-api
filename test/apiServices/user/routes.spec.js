@@ -60,7 +60,6 @@ describe('UserRoutes', () => {
 				chai.request(app)
 					.post( "/user" )
 					.send({
-						"username":"",
 						"password":"nonEmpty"
 					})
 					.end( (err,res)=>{
@@ -74,14 +73,32 @@ describe('UserRoutes', () => {
 						"username":"",
 						"password":"nonEmpty"
 					})
+					.end( (err,res)=>{
+						expect(res).to.have.status(400)
+					})
 			});
 		});
 		describe('password', () => {
 			it('password empty', () => {
-
+				chai.request(app)
+					.post("/user")
+					.send({
+						"username":"nonEmpty",
+						"password":""
+					})
+					.end( (err,res)=>{
+						expect(res).to.have.status(400)
+					})
 			});
 			it('password not defined', () => {
-
+				chai.request(app)
+					.post("/user")
+					.send({
+						"username":"nonEmpty"
+					})
+					.end( (err,res)=>{
+						expect(res).to.have.status(400)
+					})
 			});
 		});
 	});
