@@ -2,18 +2,21 @@ const express = require("express");
 const router  = express.Router();
 const UserController = require("./controller");
 const {userModel} = require("src/services/sequelize/index")
-const userController = new UserController(userModel);
+const userController = new UserController( userModel );
 router.get("/", async (req,res)=>{
 	const {username, password} = req.body;
+	// TODO: Make class for this process
 	if( username == undefined || username == "" ) return res.status(400).json( {error: "need a username"} )
 	if( password == undefined || password == "" ) return res.status(400).json( {error: "need a password"} )
 
+	// TODO: Make class for verify user exist
 	const userAuth = await userController.authUser({username, password});
-	if(userAuth) {
-		return res.send("ok")
-	}
 
-	return res.send("fail")
+	return userAuth ? res.send("ok") : res.send("fail")
+})
+router.post("/", async(req,res)=>{
+	if( username == undefined || username == "" ) return res.status(400).json( {error: "need a username"} )
+	if( password == undefined || password == "" ) return res.status(400).json( {error: "need a password"} )
 })
 
 module.exports = router;
