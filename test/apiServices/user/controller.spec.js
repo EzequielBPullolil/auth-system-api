@@ -13,20 +13,20 @@ describe('user controller test', () => {
 	const userController = new UserController(userModel);
 	const nonExistUser = {
 		username:"im not exist",
-		password:"noPassword"
+		password:"Abcdfgh2"
 	};
 	const userParams = {
 		user_id: "abcsadas",
-		username: "ezequiel",
-		password: "ezequieL45"
+		username: "abcdfLL9",
+		password: "Abcdfgh2"
 	}
 
 	describe('create user', () => {
 		it('create user with username already taken', () => {
 			const alreadyExistUser = {
 				user_id:"abc",
-				username:"alreadyExistUser",
-				password:"abcdfgH5"
+				username:"abcdfLL9",
+				password:"Abcdfgh2"
 			};
 			return expect(
 				userController.createUser( alreadyExistUser )
@@ -57,5 +57,6 @@ describe('user controller test', () => {
 				username: userParams.username
 			}
 		})
+		await userModel.findOrCreate({})
 	})
 });

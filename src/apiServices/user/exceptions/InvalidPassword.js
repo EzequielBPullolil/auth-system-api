@@ -1,9 +1,9 @@
-class InvalidUsername extends Error {
+class InvalidPassword extends Error {
 	constructor(message) {
 		super(message)
-		this.name = "InvalidUsername"
+		this.name = "InvalidPassword"
 	}
 }
 
 
-module.exports = InvalidUsername;
+module.exports = InvalidPassword;

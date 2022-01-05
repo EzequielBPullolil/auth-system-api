@@ -12,8 +12,9 @@ module.exports = class UserParamsValidator {
 	}
 
 	validateUsername(){
-		if(this.username == "") 		   throw new InvalidUsername("empty username")
-		if(!isAlphanumeric(this.username)) throw new InvalidUsername("username is not alphanumeric")
+		if(this.username == "") 		    throw new InvalidUsername("empty username")
+		if(!isAlphanumeric(this.username))  throw new InvalidUsername("no alphanumeric username")
+		if(this.username.length < 8)		throw new InvalidUsername("username length lower than 8")
 	}
 
 	validatePassword(){

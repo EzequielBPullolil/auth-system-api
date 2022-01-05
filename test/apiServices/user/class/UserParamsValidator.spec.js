@@ -2,10 +2,12 @@ const chai = require('chai');
 const {expect, assert} = chai;
 const chaiAsPromised = require("chai-as-promised")
 
-const UserParamsValidator = require("src/apiServices/user/class/UserParamsValidator")
+const UserParamsValidator = require("src/apiServices/user/class/UserParamsValidator");
+const InvalidUsername     = require("src/apiServices/user/exceptions/InvalidUsername")
+const InvalidPassword     = require("src/apiServices/user/exceptions/InvalidPassword")
 describe('UserParamsValidator test', () => {
-	let validPassword = "Abcdfgh2";
 	let validUsername = "abcdfLL9";
+	let validPassword = "Abcdfgh2";
 	describe('username', () => {
 		it('empty username', () => {
 			let username = "";
@@ -14,16 +16,16 @@ describe('UserParamsValidator test', () => {
 					username,
 					password: validPassword
 				})
-			}).to.throw(InvalidUsername("empty username"))
+			}).to.throw(InvalidUsername,"empty username")
 		});
 		it('no alphanumeric username', () => {
-			let username = "abcdfghH";
+			let username = "abcd-fg#";
 			expect( ()=>{
 				new UserParamsValidator({
 					username,
 					password: validPassword
 				})
-			}).to.throw(InvalidUsername("no alphanumeric username"))
+			}).to.throw(InvalidUsername,"no alphanumeric username")
 		});
 		it('username length < 8', () => {
 			let username = "abc8";
@@ -32,7 +34,7 @@ describe('UserParamsValidator test', () => {
 					username,
 					password: validPassword
 				})
-			}).to.throw(InvalidUsername("username length lower than 8"))
+			}).to.throw(InvalidUsername,"username length lower than 8")
 		});
 	})
 	describe('password', () => {
