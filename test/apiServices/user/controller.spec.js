@@ -8,55 +8,37 @@ const User 			 = require("src/apiServices/user/user");
 const AlreadyTakeUsername = require("src/apiServices/user/exceptions/AlreadyTakeUsername");
 const {userModel} = require('test/utils/db_connection');
 
-describe('user controller test', () => {
+describe('user controller test', async () => {
 	chai.use(chaiAsPromised)
 	const userController = new UserController(userModel);
-	const nonExistUser = {
-		username:"im not exist",
-		password:"Abcdfgh2"
-	};
-	const userParams = {
-		user_id: "abcsadas",
-		username: "abcdfLL9",
-		password: "Abcdfgh2"
-	}
+	const username = "Ezequiel";
+	it('create user', async () => {
+		let user_id = "a";
+		let password = "Abcdfgh2";
+		const user = await userController.createUser({
+			user_id,
+			username,
+			password
+		})
 
-	describe('create user', () => {
-		it('create user with username already taken', () => {
-			const alreadyExistUser = {
-				user_id:"abc",
-				username:"abcdfLL9",
-				password:"Abcdfgh2"
-			};
-			return expect(
-				userController.createUser( alreadyExistUser )
-			).be.rejectedWith(AlreadyTakeUsername);
-		});
-		it('create user instance', async () => {
-			const user = await userController.createUser( userParams )
-
-			expect(user).to.be.instanceof( User )
-		});
+		return expect( user ).to.be.instanceof(User)
 	});
-	describe('auth user', () => {
-		it('auth non exist user', async () => {
-			const userAtuh = await userController.authUser( nonExistUser )
-			expect( userAtuh )
-			.to.be.false;
-		});
-		it('auth exist user', async() => {
-			const userAtuh = await userController.authUser( userParams )
-			expect( userAtuh )
-			.to.be.true;
-		});
-
+	it('try sing user with already take username', () => {
+		let user_id = "ab";
+		let password = "Abcdfgh2";
+		return expect(
+			userController.createUser({
+				user_id,
+				username,
+				password})).to.eventually.be.rejectedWith(AlreadyTakeUsername)
 	});
-	after(async ()=>{
-		await userModel.destroy({
+
+	after(function(done){
+		userModel.destroy({
 			where:{
-				username: userParams.username
+				username
 			}
 		})
-		await userModel.findOrCreate({})
+		done();
 	})
 });

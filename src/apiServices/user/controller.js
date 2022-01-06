@@ -15,7 +15,7 @@ class UserController {
 			where:{
 				username
 			}
-		});
+		})
 		if(user != null) throw new AlreadyTakeUsername();
 
 		const userCreated = await this.model.create({

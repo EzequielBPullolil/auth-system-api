@@ -18,11 +18,14 @@ module.exports = class UserParamsValidator {
 	}
 
 	validatePassword(){
-		if(!isStrongPassword(this.password, {
+		const validate = isStrongPassword(this.password, {
 			minLength:8,
 			minLowercase: 1,
 			minUppercase: 1,
-			minNumbers: 1
-		})) throw new InvalidPassword("weak password")
+			minNumbers: 1,
+			minSymbols: 0
+		})
+		console.log(validate)
+		if(!validate)  throw new InvalidPassword("weak password")
 	}
 }
