@@ -1,6 +1,7 @@
 const User = require("./user")
 const AlreadyTakeUsername = require("./exceptions/AlreadyTakeUsername")
 const UserParamsValidator = require("./class/UserParamsValidator")
+const UsernameNotExist 		= require("src/apiServices/user/exceptions/UsernameNotExist");
 class UserController {
 	constructor(userModel) {
 		this.model = userModel;
@@ -34,6 +35,7 @@ class UserController {
 				password
 			}
 		});
+		if(user == null) throw new UsernameNotExist()
 		return user != null;
 	}
 }
