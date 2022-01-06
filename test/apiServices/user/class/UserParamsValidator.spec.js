@@ -8,6 +8,20 @@ const InvalidPassword     = require("src/apiServices/user/exceptions/InvalidPass
 describe('UserParamsValidator test', () => {
 	let validUsername = "abcdfLL9";
 	let validPassword = "Abcdfgh2";
+	describe('Validate valdiUsername and validPassword', () => {
+		expect(()=>{
+			new UserParamsValidator({
+				username: "asdasd",
+				password: validPassword
+			})
+		}).to.not.throw(InvalidPassword)
+		expect(()=>{
+			new UserParamsValidator({
+				username:  validUsername,
+				password: "asdasda"
+			})
+		}).to.not.throw(InvalidUsername)
+	});
 	describe('username', () => {
 		it('empty username', () => {
 			let username = "";

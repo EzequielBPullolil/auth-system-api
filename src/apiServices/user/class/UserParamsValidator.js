@@ -25,7 +25,6 @@ module.exports = class UserParamsValidator {
 			minNumbers: 1,
 			minSymbols: 0
 		})
-		console.log(validate)
 		if(!validate)  throw new InvalidPassword("weak password")
 	}
 }
