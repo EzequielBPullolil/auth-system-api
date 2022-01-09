@@ -4,9 +4,9 @@ const {expect, assert} = chai;
 
 //app deps
 const User = require("src/apiServices/user/user")
-const InvalidUserId = require("src/apiServices/exceptions/InvalidUserId")
-const MissingUserId = require("src/apiServices/exceptions/MissingUserId")
-const UserUUID		= require("src/apiServices/class/UserUUID")
+const InvalidUserId = require("src/apiServices/user/exceptions/InvalidUserId")
+const MissingUserId = require("src/apiServices/user/exceptions/MissingUserId")
+const UserUUID		= require("src/apiServices/user/class/UserUUID")
 
 describe('User class entity', () => {
 	const validUserId 	= new UserUUID().value;
@@ -15,12 +15,12 @@ describe('User class entity', () => {
 	const userInstance = new User({
 		user_id: validUserId,
 		username: validUsername,
-		password: userPassword
+		password: validPassword
 	});
 	describe("password compare",()=>{
 		it('compare same password', () => {
 			/* pass a no encrypted password and compare */
-			expect( userInstance.comparePassword(userPassword) )
+			expect( userInstance.comparePassword(validPassword) )
 			.to.be.true;
 		});
 		it('compare different password', () => {
