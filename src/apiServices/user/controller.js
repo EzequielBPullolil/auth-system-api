@@ -1,5 +1,6 @@
 const JwtGenerator = require("./class/JwtGenerator");
 const User = require("./user")
+const UserUUID = require("./class/UserUUID")
 const AlreadyTakeUsername = require("./exceptions/AlreadyTakeUsername")
 const UserParamsValidator = require("./class/UserParamsValidator")
 const UsernameNotExist 		= require("src/apiServices/user/exceptions/UsernameNotExist");
@@ -7,11 +8,12 @@ class UserController {
 	constructor(userModel) {
 		this.model = userModel;
 	}
-	async createUser(userParams){
+	async createUser({user_id, username,password}){
 		/* create user if username is not already taked */
-		if(!userParams) return;
-		new UserParamsValidator(userParams)
-		const {user_id, username, password} = userParams;
+		if(!user_id){
+			user_id = new UserUUID().value
+		}
+		new UserParamsValidator({user_id,username,password});
 		// find user with same name
 		const user = await this.model.findOne({
 			where:{
