@@ -1,7 +1,7 @@
 const  bcrypt  =  require ( 'bcrypt' )
 class PasswordEncryptManager {
 	#saltRounds = 10;
-	#salt 		= bcrypt.genSaltSync(saltRounds)
+	#salt 		= bcrypt.genSaltSync(this.#saltRounds)
 	constructor() {
 	}
 

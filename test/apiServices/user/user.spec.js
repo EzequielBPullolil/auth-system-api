@@ -4,10 +4,10 @@ const {expect, assert} = chai;
 
 //app deps
 const User = require("src/apiServices/user/user")
-const InvalidUserId = require("src/apiServices/user/exceptions/InvalidUserId")
-const MissingUserId = require("src/apiServices/user/exceptions/MissingUserId")
-const UserUUID		= require("src/apiServices/user/class/UserUUID")
-
+const InvalidUserId   = require("src/apiServices/user/exceptions/InvalidUserId")
+const MissingUserId   = require("src/apiServices/user/exceptions/MissingUserId")
+const UserUUID		  = require("src/apiServices/user/class/UserUUID")
+const UserIdValidator = require("src/apiServices/user/class/UserIdValidator")
 describe('User class entity', () => {
 	const validUserId 	= new UserUUID().value;
 	const validUsername = "Abcdfgh9";
@@ -31,27 +31,26 @@ describe('User class entity', () => {
 	})
 	describe('user id', () => {
 		it('get uuid', () => {
-			assert( userInstance.getId() ).equal(validUserId)
+			expect( userInstance.getId() ).to.equal(validUserId)
 		});
 		it('instance user without user id', () => {
-			const userWithoutID = new User({
-				username: validUsername,
-				password: validPassword
-			})
-			const id = userWithoutID.getId()
-			expect( ()=>{
-				new UserIdValidator(id)
-			}).to.throw(InvalidUserId)
+			expect(()=>{
+				new User({
+					username: validUsername,
+					password: validPassword
+				})
+			}).to.throw(MissingUserId)
 		});
 		it('instance user with invalid user_id', () => {
 			const invalidUserId = "sadabsd";
-			expect ( ()=>{
+
+			expect( function(){
 				new User({
 					user_id: invalidUserId,
 					username: validUsername,
 					password: validPassword
 				})
-			}).to.throw(MissingUserId)
+			}).to.throw(InvalidUserId)
 		});
 	});
 });
