@@ -17,7 +17,7 @@ class UserController {
 		// find user with same name
 		const user = await this.model.findOne({
 			where:{
-				username
+				username:`${username}%`
 			}
 		})
 		if(user != null) throw new AlreadyTakeUsername();
@@ -34,8 +34,8 @@ class UserController {
 		const {username, password} = userParams;
 		const user = await this.model.findOne({
 			where:{
-				username,
-				password
+				username:`${username}%`,
+				password:`${password}%`
 			}
 		});
 		if(user == null) throw new UsernameNotExist()
