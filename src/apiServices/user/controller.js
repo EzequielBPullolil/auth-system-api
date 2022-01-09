@@ -1,3 +1,4 @@
+const JwtGenerator = require("./class/JwtGenerator");
 const User = require("./user")
 const AlreadyTakeUsername = require("./exceptions/AlreadyTakeUsername")
 const UserParamsValidator = require("./class/UserParamsValidator")
@@ -36,7 +37,12 @@ class UserController {
 			}
 		});
 		if(user == null) throw new UsernameNotExist()
-		return user != null;
+
+
+	  	return JwtGenerator({
+			user_id: user.user_id,
+			username: user.username
+		})
 	}
 }
 
