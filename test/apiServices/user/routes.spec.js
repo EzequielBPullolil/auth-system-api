@@ -101,5 +101,23 @@ describe('UserRoutes', () => {
 					})
 			});
 		});
+		it('create user return status 200 and user instance', () => {
+			let validUsername = "abcdfgh9";
+			let validPassword = "aaaaaaA9"
+			chai.request(app)
+				.post( "/user" )
+				.send({
+					username: validUsername,
+					password: validPassword
+				})
+				.end( (err,res, body)=>{
+					expect(res).to.have.status(200)
+					expect(res).to.json
+					expect(body).to.be.equal({
+						user_id,
+						username
+					})
+				})
+		});
 	});
 });
