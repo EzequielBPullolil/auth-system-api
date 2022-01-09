@@ -1,8 +1,11 @@
+require("dotenv").config();
 const chai = require('chai');
 const {expect, assert} = chai;
 const chaiAsPromised = require("chai-as-promised")
+const jwt 			 = require("jsonwebtoken")
 
-
+const JwtVerify      = require("src/apiServices/user/class/JwtVerify")
+const JwtGenerator      = require("src/apiServices/user/class/JwtGenerator")
 const UserController = require("src/apiServices/user/controller");
 const User 			 = require("src/apiServices/user/user");
 const UserUUID 		 = require('src/apiServices/user/class/UserUUID');
@@ -13,39 +16,54 @@ const {userModel} = require('test/utils/db_connection');
 describe('user controller test', async () => {
 	chai.use(chaiAsPromised)
 	const userController = new UserController(userModel);
+	const user_id = new UserUUID().value;
 	const username = "Ezequiel";
 	const password = "Abcdfgh2";
-	it('create user', async () => {
-		let user_id = new UserUUID().value;
-		const user = await userController.createUser({
-			user_id,
-			username,
-			password
-		})
-
-		return expect( user ).to.be.instanceof(User)
-	});
-	it('try sing user with already take username', () => {
-		let user_id = new UserUUID().value;
-		return expect(
-			userController.createUser({
+	describe('Create user',() => {
+		it('create valid user', async () => {
+			const user = await userController.createUser({
 				user_id,
 				username,
-				password})).to.eventually.be.rejectedWith(AlreadyTakeUsername)
+				password
+			})
+
+			return expect( user ).to.be.instanceof(User)
+		});
+		it('try sing user with already take username', () => {
+			let user_id = new UserUUID().value;
+			return expect(
+				userController.createUser({
+					user_id,
+					username,
+					password})).to.eventually.be.rejectedWith(AlreadyTakeUsername)
+				});
 	});
-	it("auth non exist user", ()=>{
-		let username = "no existo";
-		let password = "no existo x2";
+	describe('Auth', () => {
+		const secret = process.env.JWT_SECRET;
+		it("auth non exist user", ()=>{
+			let username = "no existo";
+			let password = "no existo x2";
 
-		return expect(
-			userController.authUser({username, password})
-		).to.eventually.be.rejectedWith(UsernameNotExist)
-	})
+			return expect(
+				userController.authUser({username, password})
+			).to.eventually.be.rejectedWith(UsernameNotExist)
+		})
 
-	it('auth exist user', () => {
-		return expect(
-			userController.authUser({username,password})
-		).to.eventually.be.equal(true)
+		it('auth exist user', () => {
+			return expect(
+				userController.authUser({username,password})
+			).to.eventually.be.equal(JwtGenerator({
+				user_id,
+				username
+			}))
+		});
+		it('auth user return jwt', async() => {
+			const authUser = await userController.authUser({username, password}) ;
+			console.log(authUser)
+			return expect( () =>{
+				JwtVerify(authUser, secret)
+			} ).to.not.throw();
+		});
 	});
 	after(function(done){
 		userModel.destroy({
