@@ -5,6 +5,7 @@ const chaiAsPromised = require("chai-as-promised")
 
 const UserController = require("src/apiServices/user/controller");
 const User 			 = require("src/apiServices/user/user");
+const UserUUID 		 = require('src/apiServices/user/class/UserUUID');
 const AlreadyTakeUsername 	= require("src/apiServices/user/exceptions/AlreadyTakeUsername");
 const UsernameNotExist 		= require("src/apiServices/user/exceptions/UsernameNotExist");
 const {userModel} = require('test/utils/db_connection');
@@ -15,7 +16,7 @@ describe('user controller test', async () => {
 	const username = "Ezequiel";
 	const password = "Abcdfgh2";
 	it('create user', async () => {
-		let user_id = "a";
+		let user_id = new UserUUID().value;
 		const user = await userController.createUser({
 			user_id,
 			username,
@@ -25,7 +26,7 @@ describe('user controller test', async () => {
 		return expect( user ).to.be.instanceof(User)
 	});
 	it('try sing user with already take username', () => {
-		let user_id = "ab";
+		let user_id = new UserUUID().value;
 		return expect(
 			userController.createUser({
 				user_id,

@@ -25,7 +25,7 @@ class UserController {
 			password:password
 		});
 
-		return new User(user_id, username, password);
+		return new User({user_id, username, password});
 	}
 	async authUser(userParams){
 		const {username, password} = userParams;
