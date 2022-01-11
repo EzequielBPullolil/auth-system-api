@@ -16,19 +16,23 @@ router.get("/", async (req,res)=>{
 	// TODO: Make class for verify user exist
 	const userAuth = await userController.authUser({username, password});
 
-	return userAuth ? res.send("ok") : res.send("fail")
+	return res.json(userAuth)
 })
 router.post("/", async(req,res)=>{
-	const {username, password} = req.body;
-	if( username == undefined || username == "" ) return res.status(400).json( {error: "need a username"} )
-	if( password == undefined || password == "" ) return res.status(400).json( {error: "need a password"} )
+	try{
+		const {username, password} = req.body;
+		if( username == undefined || username == "" ) return res.status(400).json( {error: "need a username"} )
+		if( password == undefined || password == "" ) return res.status(400).json( {error: "need a password"} )
 
-	const userCreated = await userController.createUser({
-		username,
-		password
-	})
+		const userCreated = await userController.createUser({
+			username,
+			password
+		})
 
-	return res.json(userCreated).status(200);
+		return res.json(userCreated).status(200);
+	}catch(err){
+		return res.json(err).status(400)
+	}
 })
 
 module.exports = router;
