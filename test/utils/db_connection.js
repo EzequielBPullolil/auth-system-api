@@ -8,5 +8,6 @@ const sequelize = new Sequelize(database, username, password, {
 const db = {}
 
 db.userModel = require("src/apiServices/user/model")(sequelize,Sequelize)
-// db.userModel.sync()
+db.sequelize = sequelize
+// db.userModel.sync();
 module.exports = db;
