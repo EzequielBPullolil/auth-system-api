@@ -7,6 +7,7 @@ class User {
 	#id
 	constructor({ user_id, username, password}) {
 		if(!user_id) throw new MissingUserId();
+
 		new UserIdValidator(user_id)
 		this.#id 	  = user_id;
 		this.username = username;

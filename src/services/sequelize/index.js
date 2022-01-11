@@ -9,7 +9,7 @@ const db = {};
 
 
 db.userModel = require("src/apiServices/user/model")(sequelize, Sequelize)
-
+db.sequelize = sequelize;
 sequelize.sync()
 
 module.exports = db;
