@@ -1,6 +1,6 @@
 class MissingUserId extends Error {
 	constructor() {
-		super("user entity need valid userId")
+		super("user entity need userId")
 		this.name = "MissingUserId"
 	}
 }
