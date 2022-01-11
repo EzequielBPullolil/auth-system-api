@@ -16,7 +16,8 @@ class User {
 	}
 
 	comparePassword(password){
-		return this.encryptManager.decrypt(this.password) == password;
+		/* use PasswordEncryptManager for compare user instance password and param password */
+		return this.encryptManager.comparePassword(this.password, password);
 	}
 
 	getId(){
