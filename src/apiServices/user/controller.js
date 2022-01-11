@@ -1,4 +1,4 @@
-const JwtGenerator = require("./class/JwtGenerator");
+const JwtGenerator = require("src/apiServices/common/JwtGenerator");
 const User = require("./user")
 const UserUUID = require("./class/UserUUID")
 const UserParamsValidator = require("./class/UserParamsValidator")
@@ -32,7 +32,7 @@ class UserController {
 		if(user == null) throw new UsernameNotExist()
 
 		if(! user.comparePassword(password)) throw new WrongPassword();
-		
+
 	  	return JwtGenerator({
 			user_id:user.getId(),
 			username:user.username
