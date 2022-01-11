@@ -1,8 +1,10 @@
 const User 		  = require("src/apiServices/user/user");
+const PasswordEncryptManager = require('./PasswordEncryptManager');
 const { QueryTypes } = require('sequelize');
 class UserModel {
 	constructor(sequelize){
 		this.sequelize = sequelize
+		this.passwordManager = new PasswordEncryptManager();
 	}
 	async findOneByUsername(username){
 		const [user] = await this.sequelize.query(`SELECT * FROM Users WHERE BINARY username='${username}'`, { type: QueryTypes.SELECT })
@@ -16,7 +18,8 @@ class UserModel {
 	}
 
 	async create({user_id,username, password}){
-		const user = await this.sequelize.query(`INSERT INTO Users VAlUES('${user_id}','${username}','${password}')`);
+		const encryptedPassword = this.passwordManager.encrypt(password)
+		const user = await this.sequelize.query(`INSERT INTO Users VAlUES('${user_id}','${username}','${encryptedPassword}')`);
 	};
 
 }
