@@ -8,14 +8,17 @@ const InvalidUserId   = require("src/apiServices/user/exceptions/InvalidUserId")
 const MissingUserId   = require("src/apiServices/user/exceptions/MissingUserId")
 const UserUUID		  = require("src/apiServices/user/class/UserUUID")
 const UserIdValidator = require("src/apiServices/user/class/UserIdValidator")
+const PasswordEncryptManager = require("src/apiServices/user/class/PasswordEncryptManager")
 describe('User class entity', () => {
+	const passwordEncryptManager = new PasswordEncryptManager();
 	const validUserId 	= new UserUUID().value;
 	const validUsername = "Abcdfgh9";
 	const validPassword = "Password981";
+	const encryptedPass = passwordEncryptManager.encrypt(validPassword)
 	const userInstance = new User({
 		user_id: validUserId,
 		username: validUsername,
-		password: validPassword
+		password: encryptedPass
 	});
 	describe("password compare",()=>{
 		it('compare same password', () => {
