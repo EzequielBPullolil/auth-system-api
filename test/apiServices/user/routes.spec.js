@@ -113,10 +113,6 @@ describe('UserRoutes', () => {
 				.end( (err,res, body)=>{
 					expect(res).to.have.status(200)
 					expect(res).to.json
-					expect(body).to.be.equal({
-						user_id,
-						username
-					})
 				})
 		});
 	});

@@ -29,7 +29,9 @@ router.post("/", async(req,res)=>{
 			password
 		})
 
-		return res.json(userCreated).status(200);
+		return res.json({
+			username:userCreated.username
+		}).status(200);
 	}catch(err){
 		return res.json(err).status(400)
 	}
