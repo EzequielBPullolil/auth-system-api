@@ -1,8 +1,9 @@
 const JwtGenerator = require("./class/JwtGenerator");
 const User = require("./user")
 const UserUUID = require("./class/UserUUID")
-const AlreadyTakeUsername = require("./exceptions/AlreadyTakeUsername")
 const UserParamsValidator = require("./class/UserParamsValidator")
+const WrongPassword		  = require("./exceptions/WrongPassword")
+const AlreadyTakeUsername = require("./exceptions/AlreadyTakeUsername")
 const UsernameNotExist 	  = require("src/apiServices/user/exceptions/UsernameNotExist");
 class UserController {
 	constructor(userModel) {
@@ -29,6 +30,8 @@ class UserController {
 		let {username, password} = userParams;
 		const user = await this.model.findOneByUsername(username)
 		if(user == null) throw new UsernameNotExist()
+
+		if(! user.comparePassword(password)) throw new WrongPassword();
 		
 	  	return JwtGenerator({
 			user_id:user.getId(),
