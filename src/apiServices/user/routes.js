@@ -2,7 +2,7 @@ const express = require("express");
 const router  = express.Router();
 const {sequelize} = require('src/services/sequelize/index');
 
-
+const RequestLimiter = require("src/middlewares/RequestLimiter")
 const UserController = require("./controller");
 const UserModel 	 = require("./class/UserModel")
 const userModel      = new UserModel(sequelize);
@@ -26,7 +26,7 @@ router.get("/", async (req,res)=>{
 	}
 
 })
-router.post("/", async(req,res)=>{
+router.post("/", RequestLimiter, async(req,res)=>{
 	try{
 		const {username, password} = req.body;
 		if( username == undefined || username == "" ) return res.status(400).json( {error: "need a username"} )
