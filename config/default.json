@@ -8,7 +8,7 @@
 			"dialect":"mariadb"
 		}
 	},
-	"Development":{
+	"Database":{
 		"dbConfig":{
 			"database":"authSystem_dev",
 			"username":"drhades",

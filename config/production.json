@@ -1,0 +1,14 @@
+{
+	"Database":{
+		"dbConfig":{
+			"database":"authSystem_production",
+			"username":"drhades",
+			"password":"EzequielEnMysql",
+			"host":"localhost",
+			"dialect":"mariadb"
+		}
+	},
+	"Server":{
+		"port": 8080
+	}
+}
