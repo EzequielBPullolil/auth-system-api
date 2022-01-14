@@ -10,14 +10,15 @@ const userController = new UserController( userModel );
 router.get("/", async (req,res)=>{
 	try{
 		const {username, password} = req.body;
-		// TODO: Make class for this process
 		if( username == undefined || username == "" ) return res.status(400).json( {error: "need a username"} )
 		if( password == undefined || password == "" ) return res.status(400).json( {error: "need a password"} )
 
-		// TODO: Make class for verify user exist
-		const userAuth = await userController.authUser({username, password});
+		const userAuth = await userController.authUser({
+			username,
+			password
+		});
 
-		return res.json(userAuth)
+		return res.json({token:userAuth})
 	}catch(err){
 		return res.json({
 			error: err.name,
@@ -38,8 +39,8 @@ router.post("/", RequestLimiter, async(req,res)=>{
 		})
 
 		return res.json({
-			username:userCreated.username
-		}).status(200);
+			username: userCreated.username
+		}).status(201);
 	}catch(err){
 		return res.json({
 			error: err.name,
